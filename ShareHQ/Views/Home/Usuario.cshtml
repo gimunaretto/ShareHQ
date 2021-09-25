@@ -1,0 +1,22 @@
+﻿@model Usuario
+
+<form method="post" asp-controller="Home" asp-action="Usuario">
+
+    <div>
+        <label asp-for="Nome">Nome</label>
+        <input asp-for="Nome" />
+        <span asp-validation-for="Nome"></span>
+    </div>
+    <div>
+        <label asp-for="Email">E-mail</label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div>
+        <label asp-for="Telefone">Telefone</label>
+        <input asp-for="Telefone" />
+        <span asp-validation-for="Telefone"></span>
+    </div>
+
+    <button type="submit">Cadastrar</button>
+</form>

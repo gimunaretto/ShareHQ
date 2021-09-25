@@ -24,6 +24,22 @@ namespace ShareHQ.Controllers
             return View();
         }
 
+        public IActionResult Usuario()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Usuario(Usuario usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(usuario);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
