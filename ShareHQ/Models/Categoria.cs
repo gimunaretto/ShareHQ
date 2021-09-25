@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ShareHQ.Models
 {
     public class Categoria
     {
         public int Id { get; set; }
-        public string NomeCategoria { get; set; }
+
+        [Required(ErrorMessage = "Categoria obrigatória!")]
+        public string Nome { get; set; }
     }
 }
