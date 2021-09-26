@@ -40,6 +40,38 @@ namespace ShareHQ.Controllers
             return View(usuario);
         }
 
+        public IActionResult Categoria()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Categoria(Categoria categoria)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(categoria);
+        }
+
+        public IActionResult Item()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Item(Item item)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(item);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

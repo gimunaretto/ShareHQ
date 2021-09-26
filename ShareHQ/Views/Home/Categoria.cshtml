@@ -1,0 +1,13 @@
+﻿@model Categoria
+
+<form method="post" class="form-control" asp-controller="Home" asp-action="Categoria">
+
+    <h3>Categoria</h3>
+
+    <div>
+        <input asp-for="Nome" placeholder="Nome" />
+        <span asp-validation-for="Nome"></span>
+    </div>
+
+    <button type="submit">Cadastrar</button>
+</form>
