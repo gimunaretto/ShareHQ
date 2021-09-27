@@ -24,6 +24,7 @@ namespace ShareHQ.Controllers
             return View();
         }
 
+        #region [Usuário]
         public IActionResult Usuario()
         {
             return View();
@@ -39,7 +40,9 @@ namespace ShareHQ.Controllers
 
             return View(usuario);
         }
+        #endregion
 
+        #region [Categoria]
         public IActionResult Categoria()
         {
             return View();
@@ -55,7 +58,9 @@ namespace ShareHQ.Controllers
 
             return View(categoria);
         }
+        #endregion
 
+        #region [Cadastro de Itens]
         public IActionResult Item()
         {
             return View();
@@ -70,6 +75,22 @@ namespace ShareHQ.Controllers
             }
 
             return View(item);
+        }
+        #endregion
+
+        public IActionResult Emprestimo()
+        {
+            return View();
+        }
+
+        public IActionResult Item(ItemEmprestado itemEmprestado)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(itemEmprestado);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
