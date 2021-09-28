@@ -83,7 +83,7 @@ namespace ShareHQ.Controllers
             return View();
         }
 
-        public IActionResult Item(ItemEmprestado itemEmprestado)
+        public IActionResult Emprestimo(ItemEmprestado itemEmprestado)
         {
             if (ModelState.IsValid)
             {
