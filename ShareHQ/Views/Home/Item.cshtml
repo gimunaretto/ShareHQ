@@ -1,6 +1,6 @@
 ﻿@model Item
 
-<form method="post" class="form-control" asp-controller="Home" asp-action="Item">
+<form method="post" class="form-control form-group" asp-controller="Home" asp-action="Item">
 
     <h3>Publicação</h3>
 
@@ -16,10 +16,8 @@
         <input asp-for="Descricao" placeholder="Descrição" />
         <span asp-validation-for="Descricao"></span>
     </div>
-    <!-- Desenvolver para Utilizar os registros cadastrados ***usar asp-options-for -->
     <div>
-        <input asp-for="Categoria" placeholder="Categoria" />
-        <span asp-validation-for="Categoria"></span>
+        <select asp-for="Categoria" asp-items="@ViewBag.Categorias" placeholder="Categoria"></select>
     </div>
     <div>
         <label asp-for="Disponivel">Disponível</label>

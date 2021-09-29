@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using ShareHQ.Models;
 using System.Diagnostics;
+using System.Linq;
 
 namespace ShareHQ.Controllers
 {
@@ -66,6 +68,9 @@ namespace ShareHQ.Controllers
         #region [Cadastro de Itens]
         public IActionResult Item()
         {
+            var categoriaList = _repositorio.GetCategorias().Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+            categoriaList.Insert(0, new SelectListItem { Value = "", Text = "Selecione Categoria" });
+            ViewBag.Categorias = categoriaList;
             return View();
         }
 
@@ -89,6 +94,7 @@ namespace ShareHQ.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult Emprestimo(ItemEmprestado itemEmprestado)
         {
             if (ModelState.IsValid)
