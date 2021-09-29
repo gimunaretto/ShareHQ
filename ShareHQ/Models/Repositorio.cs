@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ShareHQ.Models
 {
@@ -14,6 +15,11 @@ namespace ShareHQ.Models
         public Categoria GetCategoriaById(int Id)
         {
             return _context.Categorias.FirstOrDefault(x => x.Id == Id);             
+        }
+
+        public List<Categoria> GetCategorias()
+        {
+            return _context.Categorias.ToList();
         }
     }
 }
