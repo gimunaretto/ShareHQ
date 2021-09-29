@@ -8,10 +8,12 @@ namespace ShareHQ.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IRepositorio _repositorio;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IRepositorio repositorio)
         {
             _logger = logger;
+            _repositorio = repositorio;
         }
 
         public IActionResult Index()
@@ -51,6 +53,7 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult Categoria(Categoria categoria)
         {
+              
             if (ModelState.IsValid)
             {
                 return RedirectToAction("Index");
@@ -68,9 +71,11 @@ namespace ShareHQ.Controllers
 
         [HttpPost]
         public IActionResult Item(Item item)
-        {
+        {   
             if (ModelState.IsValid)
             {
+                item.Categoria = _repositorio.GetCategoriaById(item.CategoriaId);
+
                 return RedirectToAction("Index");
             }
 
@@ -78,6 +83,7 @@ namespace ShareHQ.Controllers
         }
         #endregion
 
+        #region [Emprestimo de Item]
         public IActionResult Emprestimo()
         {
             return View();
@@ -92,6 +98,7 @@ namespace ShareHQ.Controllers
 
             return View(itemEmprestado);
         }
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

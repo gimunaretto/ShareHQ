@@ -1,21 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShareHQ.Models
 {
     public class ItemEmprestado
     {
         public int Id { get; set; }
-        public int UsuarioId { get; set; }
+
+        [Required(ErrorMessage = "Usuário obrigatório!")]
         public Usuario Usuario { get; set; }
-        public int ItemId { get; set; }
+        
+        public int UsuarioId { get; set; }
+
+        [Required(ErrorMessage = "Publicação obrigatória!")]
         public Item Item { get; set; }
+
+        public int ItemId { get; set; }
+
+        [Required(ErrorMessage = "Data obrigatória!")]
         public DateTime DataEmprestimo { get; set; }
+        
         public DateTime? DataDevolucao { get; set; }
+        
         public int PrazoDeDevolucao { get; set; }
+        
         public int StatusDevolucao { get; set; }
+        
         public int StatusEmprestimo { get; set; }
 
 

@@ -6,10 +6,6 @@ namespace ShareHQ.Models
     {
         public int Id { get; set; }
         
-        public Usuario Usuario { get; set; }
-        
-        public int UsuarioId { get; set; }
-
         [Required(ErrorMessage = "Titulo obrigatória!")]
         public string Titulo { get; set; }
 
@@ -18,7 +14,8 @@ namespace ShareHQ.Models
 
         [Required(ErrorMessage = "Descrição obrigatória!")]
         public string Descricao { get; set; }
-        
+
+        [Required(ErrorMessage = "Categoria obrigatória!")]
         public Categoria Categoria { get; set; }
         
         public int CategoriaId { get; set; }

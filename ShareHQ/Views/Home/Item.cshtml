@@ -4,12 +4,6 @@
 
     <h3>Publicação</h3>
 
-    <!-- Desenvolver para Utilizar os registros cadastrados
-    <div>
-        <input asp-for="Usuario" placeholder="Proprietário" />
-        <span asp-validation-for="Usuario"></span>
-    </div>
-    -->
     <div>
         <input asp-for="Titulo" placeholder="Título" />
         <span asp-validation-for="Titulo"></span>
@@ -22,12 +16,11 @@
         <input asp-for="Descricao" placeholder="Descrição" />
         <span asp-validation-for="Descricao"></span>
     </div>
-    <!-- Desenvolver para Utilizar os registros cadastrados
+    <!-- Desenvolver para Utilizar os registros cadastrados ***usar asp-options-for -->
     <div>
         <input asp-for="Categoria" placeholder="Categoria" />
         <span asp-validation-for="Categoria"></span>
     </div>
-    -->
     <div>
         <label asp-for="Disponivel">Disponível</label>
         <select asp-for="Disponivel">
