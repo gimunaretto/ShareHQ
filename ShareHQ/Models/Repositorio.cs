@@ -21,5 +21,29 @@ namespace ShareHQ.Models
         {
             return _context.Categorias.ToList();
         }
+
+        #region [Usuário]
+        public IQueryable<Usuario> Usuarios { get => _context.Usuarios; }
+
+        public void AdicionaUsuario(Usuario usuario)
+        {
+
+            _context.Usuarios.Add(usuario);
+
+            _context.SaveChanges();
+        }
+
+        public void UpdateUsuario(Usuario usuario)
+        {
+            _context.Usuarios.Update(usuario);
+            _context.SaveChanges();
+        }
+
+        public void RemoveUsuario(Usuario usuario)
+        {
+            _context.Usuarios.Remove(usuario);
+            _context.SaveChanges();
+        }
+        #endregion
     }
 }
