@@ -11,7 +11,7 @@ namespace ShareHQ.Models
         {
             _context = context;
         }
-        
+        #region [Categoria]
         public Categoria GetCategoriaById(int Id)
         {
             return _context.Categorias.FirstOrDefault(x => x.Id == Id);             
@@ -21,6 +21,28 @@ namespace ShareHQ.Models
         {
             return _context.Categorias.ToList();
         }
+
+        public IQueryable<Categoria> Categorias { get => _context.Categorias; }
+        public void AdicionaCategoria(Categoria categoria)
+        {
+
+            _context.Categorias.Add(categoria);
+
+            _context.SaveChanges();
+        }
+
+        public void UpdateCategoria(Categoria categoria)
+        {
+            _context.Categorias.Update(categoria);
+            _context.SaveChanges();
+        }
+
+        public void RemoveCategoria(Categoria categoria)
+        {
+            _context.Categorias.Remove(categoria);
+            _context.SaveChanges();
+        }
+        #endregion
 
         #region [Usuário]
         public IQueryable<Usuario> Usuarios { get => _context.Usuarios; }
