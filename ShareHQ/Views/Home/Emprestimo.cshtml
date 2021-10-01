@@ -4,10 +4,51 @@
     ViewData["Title"] = "Agendamento de empréstimo";
 }
 
-
 <body>
     <div id='calendar'></div>
 </body>
+
+<div id="modalAgendamento" class="modal modal-fixed-footer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style=" border-radius: 4px; background-color:white">
+    <h4 class="modal-title transparent grey-text" style="border-radius: 4px;">
+        Emprestimo de Itens
+    </h4>
+    <form method="post">
+        <div class="ui grid">
+
+            <div class="four wide column">
+                <div class="field">
+                    <label>Usuários</label>
+                    <select asp-for="UsuarioId" asp-items="@ViewBag.Usuarios"></select>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="field">
+                    <label>Itens</label>
+                    <select asp-for="ItemId" asp-items="@ViewBag.Itens"></select>
+                </div>
+            </div>
+            <div class="four wide column">
+                <div class="field">
+                    <label>Data de empréstimos</label>
+                    <input type="date" class="timepicker" autocomplete="off" asp-for="DataEmprestimo" placeholder="08:00">
+                </div>
+            </div>
+            <div class="three wide column">
+                <div class="field">
+                    <label>Data de devolução</label>
+                    <input type="date" class="timepicker" autocomplete="off" asp-for="DataDevolucao" placeholder="08:00">
+                </div>
+            </div>
+            <div class="three wide column">
+                <label>Prazo de Devolução</label>
+                <div class="field tooltipped">
+                    <input asp-for="PrazoDeDevolucao" placeholder="Prazo de devolução" />
+                </div>
+            </div>
+            <input type="submit" class="btn btn-outline-primary" />
+        </div>
+    </form>
+</div>
 
 <script>
 
@@ -17,6 +58,10 @@
             initialView: 'dayGridMonth',
             editable: true,
             locale: 'pt-br',
+            dateClick: function () {
+                $("#modalAgendamento .modal-content").html("");
+                $("#modalAgendamento").modal("show");
+            }
         });
         calendar.render();
     });

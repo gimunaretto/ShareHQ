@@ -132,7 +132,7 @@ namespace ShareHQ.Controllers
 
             return View(viewModel);
         }
-       
+
         [HttpPost]
         public IActionResult Categorias(CategoriasViewModel viewModel)
         {
@@ -203,7 +203,7 @@ namespace ShareHQ.Controllers
             {
                 Itens = _repositorio.GetItens()
             };
-                
+
             return View(itensViewModel);
         }
 
@@ -274,6 +274,14 @@ namespace ShareHQ.Controllers
         #region [Emprestimo de Item]
         public IActionResult Emprestimo()
         {
+            var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
+            ViewBag.Itens = itens;
+
+            var usuarios = _repositorio.Usuarios.Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+            usuarios.Insert(0, new SelectListItem { Value = "", Text = "Selecione o locatário" });
+            ViewBag.Usuarios = usuarios;
+
             return View();
         }
 
@@ -285,10 +293,86 @@ namespace ShareHQ.Controllers
                 return RedirectToAction("Index");
             }
 
+            itemEmprestado.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == itemEmprestado.UsuarioId);
+            itemEmprestado.Item = _repositorio.GetItemById(itemEmprestado.ItemId);
+            _repositorio.Add(itemEmprestado);
             return View(itemEmprestado);
         }
+
+        public IActionResult ListaItens()
+        {
+            var itensEmprestadosViewModel = new ItensEmprestadosViewModel()
+            {
+                Itens = _repositorio.GetEmprestado()
+           
+        };
+            foreach(var i in itensEmprestadosViewModel.Itens)
+            {
+                i.Item = _repositorio.GetItemById(i.ItemId);
+                i.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == i.UsuarioId);
+               
+            }
+
+            return View(itensEmprestadosViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ListaItens(ItensEmprestadosViewModel itensEmprestadosViewModel)
+        {
+            itensEmprestadosViewModel.Itens = _repositorio.GetEmprestado();
+            return View(itensEmprestadosViewModel);
+        }
+
+        public IActionResult EdicaoItemEmprestado(int id)
+        {
+            MontaDropDownListCatergoria();
+
+            var editando = _repositorio.GetEmprestadoById(id);
+
+            if (editando == null)
+            {
+                return RedirectToAction("ListaItens");
+            }
+
+            return View(editando);
+        }
+
+        [HttpPost]
+        public IActionResult EdicaoItemEMprestado(ItemEmprestado item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(item);
+            }
+
+            item.Item = _repositorio.GetItemById(item.ItemId);
+            _repositorio.Update(item);
+            return RedirectToAction("ListaItens");
+        }
+
+        public IActionResult RemocaoItemEmprestado(int id)
+        {
+            MontaDropDownListCatergoria();
+
+            var removendo = _repositorio.GetEmprestadoById(id);
+
+            if (removendo == null)
+            {
+                return RedirectToAction("ListaItens");
+            }
+
+            return View(removendo);
+        }
+
+        [HttpPost]
+        public IActionResult RemocaoItemEmprestado(ItemEmprestado item)
+        {
+            _repositorio.Remove(item);
+
+            return RedirectToAction("ListaItens");
+        }
         #endregion
-        
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

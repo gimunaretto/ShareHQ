@@ -29,6 +29,18 @@ namespace ShareHQ.Models
         void Update(Item item);
         void Remove(Item item);
         #endregion
+
+        #region [ItemEmpresatdo]
+        ItemEmprestado GetEmprestadoById(int Id);
+        List<ItemEmprestado> GetEmprestado();
+
+        void Add(ItemEmprestado itensEmprestado);
+
+        void Update(ItemEmprestado itensEmprestado);
+
+        void Remove(ItemEmprestado itensEmprestado);
+
+        #endregion
     }
 
 }

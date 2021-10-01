@@ -11,6 +11,7 @@ namespace ShareHQ.Models
         {
             _context = context;
         }
+
         #region [Categoria]
         public Categoria GetCategoriaById(int Id)
         {
@@ -64,7 +65,6 @@ namespace ShareHQ.Models
         }
         #endregion
 
-
         #region [Item]
         public Item GetItemById(int Id)
         {
@@ -94,5 +94,37 @@ namespace ShareHQ.Models
             _context.SaveChanges();
         }
         #endregion
+
+
+        #region [ItemEmpresatdo]
+        public ItemEmprestado GetEmprestadoById(int Id)
+        {
+            return _context.ItensEmprestados.FirstOrDefault(x => x.Id == Id);
+        }
+
+        public List<ItemEmprestado> GetEmprestado()
+        {
+            return _context.ItensEmprestados.ToList();
+        }
+
+        public void Add(ItemEmprestado itensEmprestado)
+        {
+            _context.ItensEmprestados.Add(itensEmprestado);
+            _context.SaveChanges();
+        }
+
+        public void Update(ItemEmprestado itensEmprestado)
+        {
+            _context.ItensEmprestados.Update(itensEmprestado);
+            _context.SaveChanges();
+        }
+
+        public void Remove(ItemEmprestado itensEmprestado)
+        {
+            _context.ItensEmprestados.Remove(itensEmprestado);
+            _context.SaveChanges();
+        }
+        #endregion
+
     }
 }

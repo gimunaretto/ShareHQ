@@ -1,0 +1,22 @@
+﻿@model ItensEmprestadosViewModel
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Search"></label>
+        <input asp-for="Search" />
+        <input type="submit" class="btn btn-outline-primary" />
+    </div>
+</form>
+
+@foreach (var item in Model.Itens)
+{
+    var cssClass = !string.IsNullOrWhiteSpace(Model.Search) && item.Item.Titulo.Contains(Model.Search, StringComparison.InvariantCultureIgnoreCase) ? "text-info" : "";
+    var cssDevolucao = item.StatusDevolucao == 1 ? "text-primary" : "text-danger";
+
+<div>
+    <span class="@cssClass @cssDevolucao">@item.Item.Titulo</span>
+    <span class="@cssClass @cssDevolucao">@item.Usuario.Nome</span>
+    <a asp-action="EdicaoItem" asp-controller="Home" asp-route-Id="@item.Id">Editar</a>
+    <a asp-action="RemocaoItem" asp-controller="Home" asp-route-Id="@item.Id">Remover</a>
+</div>
+}

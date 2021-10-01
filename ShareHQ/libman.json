@@ -5,6 +5,29 @@
     {
       "library": "fullcalendar@5.9.0",
       "destination": "wwwroot/lib/fullcalendar/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "bootstrap@5.1.1",
+      "destination": "wwwroot/lib/bootstrap/"
     }
-  ]
+  ,
+{
+  "provider": "cdnjs",
+  "library": "semantic-ui@2.4.1",
+  "destination": "wwwroot/semantic-ui/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "semantic-ui@2.4.1",
+  "destination": "wwwroot/semantic-ui/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "semantic-ui@2.4.1",
+  "destination": "wwwroot/semantic-ui/"
+}
+]
 }
