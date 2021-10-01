@@ -1,0 +1,32 @@
+﻿@model Item
+
+<form method="post" class="form-control form-group" asp-controller="Home" asp-action="RemocaoItem">
+
+    <h3>Exclusão da Publicação</h3>
+
+    <div>
+        <input asp-for="Titulo" placeholder="Título" disabled />
+        <span asp-validation-for="Titulo"></span>
+    </div>
+    <div>
+        <input asp-for="Edicao" placeholder="Edição" disabled />
+        <span asp-validation-for="Edicao"></span>
+    </div>
+    <div>
+        <input asp-for="Descricao" placeholder="Descrição" disabled />
+        <span asp-validation-for="Descricao"></span>
+    </div>
+    <div>
+        <select asp-for="CategoriaId" asp-items="@ViewBag.Categorias" selected="CategoriaId" disabled></select>
+    </div>
+    <div>
+        <label asp-for="Disponivel">Disponível</label>
+        <select asp-for="Disponivel"  disabled>
+            <option value="true">Sim</option>
+            <option value="false">Não</option>
+        </select>
+        <span asp-validation-for="Disponivel"></span>
+    </div>
+
+    <button type="submit">Remover</button>
+</form>

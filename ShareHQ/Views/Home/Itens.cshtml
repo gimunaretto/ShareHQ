@@ -1,0 +1,21 @@
+﻿@model ItensViewModel
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Search"></label>
+        <input asp-for="Search" />
+        <input type="submit" class="btn btn-outline-primary" />
+    </div>
+</form>
+
+@foreach (var item in Model.Itens)
+{
+    var cssClass = !string.IsNullOrWhiteSpace(Model.Search) && item.Titulo.Contains(Model.Search, StringComparison.InvariantCultureIgnoreCase) ? "text-info" : "";
+    var cssDisponivel = item.Disponivel == true ? "text-primary" : "text-danger";
+
+    <div>
+        <span class="@cssClass @cssDisponivel">@item.Titulo</span>
+        <a asp-action="EdicaoItem" asp-controller="Home" asp-route-Id="@item.Id">Editar</a>
+        <a asp-action="RemocaoItem" asp-controller="Home" asp-route-Id="@item.Id">Remover</a>
+    </div>
+}

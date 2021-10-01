@@ -15,9 +15,9 @@ namespace ShareHQ.Models
         [Required(ErrorMessage = "Descrição obrigatória!")]
         public string Descricao { get; set; }
 
-        [Required(ErrorMessage = "Categoria obrigatória!")]
         public Categoria Categoria { get; set; }
-        
+
+        [Required(ErrorMessage = "Categoria obrigatória!")]
         public int CategoriaId { get; set; }
 
         [Required(ErrorMessage = "Disponibilidade obrigatória!")]
