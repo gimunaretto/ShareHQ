@@ -1,0 +1,23 @@
+﻿@model ShareHQ.ViewModels.CategoriasViewModel
+
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Search"></label>
+        <input asp-for="Search" />
+        <input type="submit" class="btn btn-outline-primary" />
+    </div>
+</form>
+
+@foreach (var categoria in Model.Categorias)
+{
+    var cssClass = !string.IsNullOrWhiteSpace(Model.Search) && categoria.Nome.Contains(Model.Search, StringComparison.InvariantCultureIgnoreCase) ? "text-info" : "";
+
+    <div>
+        <span class="@cssClass">@categoria.Nome</span>
+        <a asp-action="CategoriaEdicao" asp-controller="Home" asp-route-Id="@categoria.Id">Editar</a>
+        <a asp-action="CategoriaRemocao" asp-controller="Home" asp-route-Id="@categoria.Id">Remover</a>
+    </div>
+
+
+}

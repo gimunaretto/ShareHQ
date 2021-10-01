@@ -1,0 +1,15 @@
+﻿@model Categoria
+
+<h1>Removendo Categoria</h1>
+
+<form method="post" asp-controller="Home" asp-action="CategoriaRemocao">
+    <div>
+        <input asp-for="Nome" placeholder="Nome" />
+        <span asp-validation-for="Nome"></span>
+    </div>
+    <br />
+    <br />
+    <p>Tem certeza que quer remover?</p>
+    <button type="submit">Remover</button>
+
+</form>
