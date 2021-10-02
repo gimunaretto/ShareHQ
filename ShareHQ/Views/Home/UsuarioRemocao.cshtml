@@ -4,21 +4,10 @@
 
 <form method="post" asp-controller="Home" asp-action="UsuarioRemocao">
 
-    <div>
-        <input asp-for="Nome" placeholder="Nome" disabled/>
-        <span asp-validation-for="Nome"></span>
+    <h3>Exclusão do Usuário</h3>
+    <div class="four wide column">
+        <p> Confirmar remoção do usuário?</p>
+        <button type="submit">Remover</button>
     </div>
-    <div>
-        <input asp-for="Email" placeholder="E-mail" disabled/>
-        <span asp-validation-for="Email"></span>
-    </div>
-    <div>
-        <input asp-for="Telefone" placeholder="Telefone" disabled/>
-        <span asp-validation-for="Telefone"></span>
-    </div>
-    <br />
-    <br />
-    <p>Tem certeza que quer remover?</p>
-    <button type="submit">Remover</button>
 
 </form>

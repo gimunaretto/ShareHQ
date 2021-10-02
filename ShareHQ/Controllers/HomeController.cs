@@ -274,7 +274,7 @@ namespace ShareHQ.Controllers
         #region [Emprestimo de Item]
         public IActionResult Emprestimo()
         {
-            var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            var itens = _repositorio.GetItens().Where(x => x.Disponivel == true).Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
             itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
             ViewBag.Itens = itens;
 
@@ -298,6 +298,11 @@ namespace ShareHQ.Controllers
             itemEmprestado.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == itemEmprestado.UsuarioId);
             itemEmprestado.Item = _repositorio.GetItemById(itemEmprestado.ItemId);
             _repositorio.Add(itemEmprestado);
+
+            itemEmprestado.Item.Disponivel = false;
+            
+            var item = itemEmprestado.Item;
+            _repositorio.Update(item);
             return View(itemEmprestado);
         }
 
@@ -327,7 +332,8 @@ namespace ShareHQ.Controllers
 
         public IActionResult EdicaoItemEmprestado(int id)
         {
-            var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            var itens = _repositorio.GetItens().Where(x => x.Disponivel == true).Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+     
             itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
             ViewBag.Itens = itens;
 
@@ -375,9 +381,14 @@ namespace ShareHQ.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemocaoItemEmprestado(ItemEmprestado item)
+        public IActionResult RemocaoItemEmprestado(ItemEmprestado itemEmprestado)
         {
-            _repositorio.Remove(item);
+
+            var itemVerificado = _repositorio.GetItemById(itemEmprestado.ItemId);
+            itemVerificado.Disponivel = true;
+            var item = itemVerificado ;
+            _repositorio.Update(item);
+            _repositorio.Remove(itemEmprestado);
 
             return RedirectToAction("ListaItens");
         }

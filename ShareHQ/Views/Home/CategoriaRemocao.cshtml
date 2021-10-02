@@ -3,13 +3,10 @@
 <h1>Removendo Categoria</h1>
 
 <form method="post" asp-controller="Home" asp-action="CategoriaRemocao">
-    <div>
-        <input asp-for="Nome" placeholder="Nome" />
-        <span asp-validation-for="Nome"></span>
+    <h3>Exclusão da Categoria</h3>
+    <div class="four wide column">
+        <p> Confirmar remoção da categoria?</p>
+        <button type="submit">Remover</button>
     </div>
-    <br />
-    <br />
-    <p>Tem certeza que quer remover?</p>
-    <button type="submit">Remover</button>
 
 </form>

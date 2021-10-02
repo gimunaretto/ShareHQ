@@ -7,14 +7,15 @@ namespace ShareHQ.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Usuário obrigatório!")]
-        public Usuario Usuario { get; set; }
         
-        public int UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
 
-        [Required(ErrorMessage = "Publicação obrigatória!")]
+        [Required(ErrorMessage = "Usuário obrigatório!")]
+        public int UsuarioId { get; set; }
+       
         public Item Item { get; set; }
 
+        [Required(ErrorMessage = "Publicação obrigatória!")]
         public int ItemId { get; set; }
 
         [Required(ErrorMessage = "Data obrigatória!")]
