@@ -13,10 +13,10 @@
     var cssClass = !string.IsNullOrWhiteSpace(Model.Search) && item.Item.Titulo.Contains(Model.Search, StringComparison.InvariantCultureIgnoreCase) ? "text-info" : "";
     var cssDevolucao = item.StatusDevolucao == 1 ? "text-primary" : "text-danger";
 
-<div>
-    <span class="@cssClass @cssDevolucao">@item.Item.Titulo</span>
-    <span class="@cssClass @cssDevolucao">@item.Usuario.Nome</span>
-    <a asp-action="EdicaoItemEmprestado" asp-controller="Home" asp-route-Id="@item.Id">Editar</a>
-    <a asp-action="RemocaoItemEmprestado" asp-controller="Home" asp-route-Id="@item.Id">Remover</a>
-</div>
+    <div>
+        <span class="@cssClass @cssDevolucao">@item.Item.Titulo</span>
+        <span class="@cssClass @cssDevolucao">@item.Usuario.Nome</span>
+        <a asp-action="EdicaoItemEmprestado" asp-controller="Home" asp-route-Id="@item.Id">Editar</a>
+        <a asp-action="RemocaoItemEmprestado" asp-controller="Home" asp-route-Id="@item.Id">Remover</a>
+    </div>
 }

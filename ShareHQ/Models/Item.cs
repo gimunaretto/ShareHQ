@@ -5,7 +5,7 @@ namespace ShareHQ.Models
     public class Item
     {
         public int Id { get; set; }
-        
+
         [Required(ErrorMessage = "Titulo obrigatória!")]
         public string Titulo { get; set; }
 
@@ -22,6 +22,5 @@ namespace ShareHQ.Models
 
         [Required(ErrorMessage = "Disponibilidade obrigatória!")]
         public bool Disponivel { get; set; }
-
     }
 }

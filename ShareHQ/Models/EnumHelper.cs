@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Reflection;
 
 namespace ShareHQ.Models
@@ -25,6 +22,7 @@ namespace ShareHQ.Models
             return output;
         }
     }
+
     public class EnumStringValueAttribute : Attribute
     {
         private readonly string _value;
@@ -39,5 +37,4 @@ namespace ShareHQ.Models
             get { return _value; }
         }
     }
-
 }

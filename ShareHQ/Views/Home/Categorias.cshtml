@@ -1,6 +1,5 @@
 ﻿@model ShareHQ.ViewModels.CategoriasViewModel
 
-
 <form method="post">
     <div class="form-group">
         <label asp-for="Search"></label>
@@ -18,6 +17,5 @@
         <a asp-action="CategoriaEdicao" asp-controller="Home" asp-route-Id="@categoria.Id">Editar</a>
         <a asp-action="CategoriaRemocao" asp-controller="Home" asp-route-Id="@categoria.Id">Remover</a>
     </div>
-
 
 }

@@ -6,16 +6,17 @@ namespace ShareHQ.Models
     public class Repositorio : IRepositorio
     {
         private readonly AppDbContext _context;
-        
+
         public Repositorio(AppDbContext context)
         {
             _context = context;
         }
 
         #region [Categoria]
+
         public Categoria GetCategoriaById(int Id)
         {
-            return _context.Categorias.FirstOrDefault(x => x.Id == Id);             
+            return _context.Categorias.FirstOrDefault(x => x.Id == Id);
         }
 
         public List<Categoria> GetCategorias()
@@ -24,6 +25,7 @@ namespace ShareHQ.Models
         }
 
         public IQueryable<Categoria> Categorias { get => _context.Categorias; }
+
         public void AdicionaCategoria(Categoria categoria)
         {
             _context.Categorias.Add(categoria);
@@ -41,9 +43,11 @@ namespace ShareHQ.Models
             _context.Categorias.Remove(categoria);
             _context.SaveChanges();
         }
-        #endregion
+
+        #endregion [Categoria]
 
         #region [Usuário]
+
         public IQueryable<Usuario> Usuarios { get => _context.Usuarios; }
 
         public void AdicionaUsuario(Usuario usuario)
@@ -63,9 +67,11 @@ namespace ShareHQ.Models
             _context.Usuarios.Remove(usuario);
             _context.SaveChanges();
         }
-        #endregion
+
+        #endregion [Usuário]
 
         #region [Item]
+
         public Item GetItemById(int Id)
         {
             return _context.Itens.FirstOrDefault(x => x.Id == Id);
@@ -77,7 +83,7 @@ namespace ShareHQ.Models
         }
 
         public void Add(Item item)
-        {                       
+        {
             _context.Itens.Add(item);
             _context.SaveChanges();
         }
@@ -93,10 +99,11 @@ namespace ShareHQ.Models
             _context.Itens.Remove(item);
             _context.SaveChanges();
         }
-        #endregion
 
+        #endregion [Item]
 
         #region [ItemEmpresatdo]
+
         public ItemEmprestado GetEmprestadoById(int Id)
         {
             return _context.ItensEmprestados.FirstOrDefault(x => x.Id == Id);
@@ -124,7 +131,7 @@ namespace ShareHQ.Models
             _context.ItensEmprestados.Remove(itensEmprestado);
             _context.SaveChanges();
         }
-        #endregion
 
+        #endregion [ItemEmpresatdo]
     }
 }

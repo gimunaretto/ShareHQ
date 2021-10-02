@@ -10,11 +10,9 @@
  */
 
 ;(function ($, window, document, undefined) {
-
 "use strict";
 
 $.fn.video = function(parameters) {
-
   var
     $allModules     = $(this),
 
@@ -65,7 +63,6 @@ $.fn.video = function(parameters) {
       ;
 
       module = {
-
         initialize: function() {
           module.debug('Initializing video');
           module.create();
@@ -453,7 +450,6 @@ $.fn.video = function(parameters) {
 };
 
 $.fn.video.settings = {
-
   name        : 'Video',
   namespace   : 'video',
 
@@ -527,6 +523,4 @@ $.fn.video.settings.templates = {
     return html;
   }
 };
-
-
 })( jQuery, window , document );

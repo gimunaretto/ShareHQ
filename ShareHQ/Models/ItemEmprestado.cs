@@ -7,12 +7,11 @@ namespace ShareHQ.Models
     {
         public int Id { get; set; }
 
-        
         public Usuario Usuario { get; set; }
 
         [Required(ErrorMessage = "Usuário obrigatório!")]
         public int UsuarioId { get; set; }
-       
+
         public Item Item { get; set; }
 
         [Required(ErrorMessage = "Publicação obrigatória!")]
@@ -20,20 +19,20 @@ namespace ShareHQ.Models
 
         [Required(ErrorMessage = "Data obrigatória!")]
         public DateTime DataEmprestimo { get; set; }
-        
-        public DateTime? DataDevolucao { get; set; }
-        
-        public int PrazoDeDevolucao { get; set; }
-        
-        public int StatusDevolucao { get; set; }
-        
-        public int StatusEmprestimo { get; set; }
 
+        public DateTime? DataDevolucao { get; set; }
+
+        public int PrazoDeDevolucao { get; set; }
+
+        public int StatusDevolucao { get; set; }
+
+        public int StatusEmprestimo { get; set; }
 
         public enum DevolucaoStatus
         {
             [EnumStringValue("No Prazo")]
             NoPrazo = 1,
+
             [EnumStringValue("Atrasado")]
             Atrasado = 2,
         }
@@ -42,11 +41,12 @@ namespace ShareHQ.Models
         {
             [EnumStringValue("Em Empréstimo")]
             EmEmprestimo = 1,
+
             [EnumStringValue("Disponível para empréstimo")]
             Disponivel = 2,
+
             [EnumStringValue("Devolvido")]
             Devolvido = 3,
         }
-
     }
 }

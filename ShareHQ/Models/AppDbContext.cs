@@ -9,7 +9,7 @@ namespace ShareHQ.Models
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
-        
+
         public DbSet<Categoria> Categorias { get; set; }
 
         public DbSet<Item> Itens { get; set; }

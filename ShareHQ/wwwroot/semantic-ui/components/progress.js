@@ -9,7 +9,6 @@
  */
 
 ;(function ($, window, document, undefined) {
-
 'use strict';
 
 window = (typeof window != 'undefined' && window.Math == Math)
@@ -73,7 +72,6 @@ $.fn.progress = function(parameters) {
       ;
 
       module = {
-
         initialize: function() {
           module.debug('Initializing progress bar', settings);
 
@@ -844,7 +842,6 @@ $.fn.progress = function(parameters) {
 };
 
 $.fn.progress.settings = {
-
   name         : 'Progress',
   namespace    : 'progress',
 
@@ -924,8 +921,5 @@ $.fn.progress.settings = {
     success : 'success',
     warning : 'warning'
   }
-
 };
-
-
 })( jQuery, window, document );

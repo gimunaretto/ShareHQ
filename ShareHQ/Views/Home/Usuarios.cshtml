@@ -1,6 +1,5 @@
 ﻿@model ShareHQ.ViewModels.UsuariosViewModel
 
-
 <form method="post">
     <div class="form-group">
         <label asp-for="Search"></label>
@@ -12,12 +11,11 @@
 @foreach (var usuario in Model.Usuarios)
 {
     var cssClass = !string.IsNullOrWhiteSpace(Model.Search) && usuario.Nome.Contains(Model.Search, StringComparison.InvariantCultureIgnoreCase) ? "text-info" : "";
-   
-<div>
-    <span class="@cssClass">@usuario.Nome</span>
-    <a asp-action="UsuarioEdicao" asp-controller="Home" asp-route-Id="@usuario.Id">Editar</a>
-    <a asp-action="UsuarioRemocao" asp-controller="Home" asp-route-Id="@usuario.Id">Remover</a>
-</div>
-    
-    
+
+    <div>
+        <span class="@cssClass">@usuario.Nome</span>
+        <a asp-action="UsuarioEdicao" asp-controller="Home" asp-route-Id="@usuario.Id">Editar</a>
+        <a asp-action="UsuarioRemocao" asp-controller="Home" asp-route-Id="@usuario.Id">Remover</a>
+    </div>
+
 }

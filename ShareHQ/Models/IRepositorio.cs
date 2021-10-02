@@ -5,33 +5,52 @@ namespace ShareHQ.Models
 {
     public interface IRepositorio
     {
-
         #region [Usuário]
+
         IQueryable<Usuario> Usuarios { get; }
+
         void AdicionaUsuario(Usuario usuario);
+
         void UpdateUsuario(Usuario usuario);
+
         void RemoveUsuario(Usuario usuario);
-        #endregion
+
+        #endregion [Usuário]
 
         #region [Categoria]
+
         Categoria GetCategoriaById(int Id);
+
         List<Categoria> GetCategorias();
+
         IQueryable<Categoria> Categorias { get; }
+
         void AdicionaCategoria(Categoria categoria);
+
         void UpdateCategoria(Categoria categoria);
+
         void RemoveCategoria(Categoria categoria);
-        #endregion
+
+        #endregion [Categoria]
 
         #region [Item]
+
         Item GetItemById(int Id);
+
         List<Item> GetItens();
+
         void Add(Item item);
+
         void Update(Item item);
+
         void Remove(Item item);
-        #endregion
+
+        #endregion [Item]
 
         #region [ItemEmpresatdo]
+
         ItemEmprestado GetEmprestadoById(int Id);
+
         List<ItemEmprestado> GetEmprestado();
 
         void Add(ItemEmprestado itensEmprestado);
@@ -40,7 +59,6 @@ namespace ShareHQ.Models
 
         void Remove(ItemEmprestado itensEmprestado);
 
-        #endregion
+        #endregion [ItemEmpresatdo]
     }
-
 }

@@ -10,6 +10,5 @@ namespace ShareHQ.ViewModels
         public string Search { get; set; }
 
         public IEnumerable<ItemEmprestado> Itens { get; set; }
-
     }
 }

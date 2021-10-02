@@ -1,8 +1,5 @@
-﻿using System;
+﻿using ShareHQ.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ShareHQ.Models;
 using System.ComponentModel;
 
 namespace ShareHQ.ViewModels
