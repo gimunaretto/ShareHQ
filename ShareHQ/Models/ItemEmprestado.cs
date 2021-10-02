@@ -33,19 +33,19 @@ namespace ShareHQ.Models
         public enum DevolucaoStatus
         {
             [EnumStringValue("No Prazo")]
-            P = 1,
+            NoPrazo = 1,
             [EnumStringValue("Atrasado")]
-            A = 2,
+            Atrasado = 2,
         }
 
         public enum EmprestimoStatus
         {
             [EnumStringValue("Em Empréstimo")]
-            E = 1,
+            EmEmprestimo = 1,
             [EnumStringValue("Disponível para empréstimo")]
-            DE = 2,
+            Disponivel = 2,
             [EnumStringValue("Devolvido")]
-            D = 3,
+            Devolvido = 3,
         }
 
     }
