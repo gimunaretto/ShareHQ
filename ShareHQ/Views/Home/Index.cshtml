@@ -4,17 +4,17 @@
 
 <div class="text-center">
     <h1 class="display-4">Bem Vindo ao ShareHQ</h1>
-    <div><a asp-action="Usuario">Cadastros de Usuários</a></div>
-    <div><a asp-action="Categoria">Cadastros de Categorias</a></div>
-    <div><a asp-action="Item">Cadastros de Itens</a></div>
-    <div><a asp-action="Emprestimo">Empréstimo de Itens</a></div>
+    <div><a asp-action="Usuario" asp-controller="Usuario">Cadastros de Usuários</a></div>
+    <div><a asp-action="Categoria" asp-controller="Categoria">Cadastros de Categorias</a></div>
+    <div><a asp-action="Item" asp-controller="Item">Cadastros de Itens</a></div>
+    <div><a asp-action="Emprestimo" asp-controller="ItemEmprestado">Empréstimo de Itens</a></div>
 </div>
 
 <br />
 <br />
 <div class="text-center">
-    <div><a asp-action="Usuarios">Lista de Usuarios</a></div>
-    <div><a asp-action="Categorias">Lista de Categorias</a></div>
-    <div><a asp-action="Itens">Lista de Itens</a></div>
-    <div><a asp-action="ListaItens">Lista de Itens Emprestados</a></div>
+    <div><a asp-action="Usuarios" asp-controller="Usuario">Lista de Usuarios</a></div>
+    <div><a asp-action="Categorias" asp-controller="Categoria">Lista de Categorias</a></div>
+    <div><a asp-action="Itens" asp-controller="Item">Lista de Itens</a></div>
+    <div><a asp-action="ListaItens" asp-controller="ItemEmprestado">Lista de Itens Emprestados</a></div>
 </div>

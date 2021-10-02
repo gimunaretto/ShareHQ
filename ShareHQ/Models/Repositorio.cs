@@ -82,19 +82,19 @@ namespace ShareHQ.Models
             return _context.Itens.ToList();
         }
 
-        public void Add(Item item)
+        public void AddItem(Item item)
         {
             _context.Itens.Add(item);
             _context.SaveChanges();
         }
 
-        public void Update(Item item)
+        public void UpdateItem(Item item)
         {
             _context.Itens.Update(item);
             _context.SaveChanges();
         }
 
-        public void Remove(Item item)
+        public void RemoveItem(Item item)
         {
             _context.Itens.Remove(item);
             _context.SaveChanges();

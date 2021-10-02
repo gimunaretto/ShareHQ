@@ -1,8 +1,8 @@
 ﻿@model Item
 
-<form method="post" class="form-control form-group" asp-controller="Home" asp-action="Item">
+<form method="post" class="form-control form-group" asp-controller="Item" asp-action="EdicaoItem">
 
-    <h3>Inclusão da Publicação</h3>
+    <h3>Alteração da Publicação</h3>
 
     <div>
         <input asp-for="Titulo" placeholder="Título" />
@@ -17,7 +17,7 @@
         <span asp-validation-for="Descricao"></span>
     </div>
     <div>
-        <select asp-for="CategoriaId" asp-items="@ViewBag.Categorias"></select>
+        <select asp-for="CategoriaId" asp-items="@ViewBag.Categorias" selected="CategoriaId"></select>
     </div>
     <div>
         <label asp-for="Disponivel">Disponível</label>
@@ -28,5 +28,5 @@
         <span asp-validation-for="Disponivel"></span>
     </div>
 
-    <button type="submit">Cadastrar</button>
+    <button type="submit">Salvar</button>
 </form>

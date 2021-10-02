@@ -39,11 +39,11 @@ namespace ShareHQ.Models
 
         List<Item> GetItens();
 
-        void Add(Item item);
+        void AddItem(Item item);
 
-        void Update(Item item);
+        void UpdateItem(Item item);
 
-        void Remove(Item item);
+        void RemoveItem(Item item);
 
         #endregion [Item]
 
