@@ -4,38 +4,42 @@
 
     <h3>Alteração do Item Emprestado</h3>
 
-       
-            <div class="four wide column">
-                <div class="field">
-                    <label>Usuários</label>
-                    <select asp-for="UsuarioId" asp-items="@ViewBag.Usuarios"></select>
-                </div>
-            </div>
-            <div class="four wide column">
-                <div class="field">
-                    <label>Itens</label>
-                    <select asp-for="ItemId" asp-items="@ViewBag.Itens"></select>
-                </div>
-            </div>
-            <div class="four wide column">
-                <div class="field">
-                    <label>Data de empréstimos</label>
-                    <input type="date" class="timepicker" autocomplete="off" asp-for="DataEmprestimo" placeholder="08:00">
-                </div>
-            </div>
-            <div class="three wide column">
-                <div class="field">
-                    <label>Data de devolução</label>
-                    <input type="date" class="timepicker" autocomplete="off" asp-for="DataDevolucao" placeholder="08:00">
-                </div>
-            </div>
-            <div class="three wide column">
-                <label>Prazo de Devolução</label>
-                <div class="field tooltipped">
-                    <input asp-for="PrazoDeDevolucao" placeholder="Prazo de devolução" />
-                </div>
-            </div>
-     
+    <input type="hidden" asp-for="Id" />
+
+    <div class="four wide column">
+        <div class="field">
+            <label>Usuários</label>
+            <select asp-for="Usuario" asp-items="@ViewBag.Usuarios" disabled></select>
+            <input type="hidden" asp-for="UsuarioId" />
+        </div>
+    </div>
+    <div class="four wide column">
+        <div class="field">
+            <label>Itens</label>
+            <select asp-for="Item" asp-items="@ViewBag.Itens" disabled></select>
+            <input type="hidden" asp-for="ItemId" />
+        </div>
+    </div>
+    <div class="four wide column">
+        <div class="field">
+            <label>Data de empréstimos</label>
+            <input type="date" class="timepicker" autocomplete="off" asp-for="DataEmprestimo" placeholder="08:00" disabled>
+            <input type="hidden" asp-for="DataEmprestimo">
+        </div>
+    </div>
+    <div class="three wide column">
+        <div class="field">
+            <label>Data de devolução</label>
+            <input type="date" class="timepicker" autocomplete="off" asp-for="DataDevolucao" placeholder="08:00">
+        </div>
+    </div>
+    <div class="three wide column">
+        <label>Prazo de Devolução</label>
+        <div class="field tooltipped">
+            <input asp-for="PrazoDeDevolucao" placeholder="Prazo de devolução" />
+        </div>
+    </div>
+
 
     <button type="submit">Salvar</button>
 </form>

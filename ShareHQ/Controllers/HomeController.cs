@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using ShareHQ.Models;
@@ -288,22 +289,22 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult Emprestimo(ItemEmprestado itemEmprestado)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction("Index");
             }
 
-            itemEmprestado.StatusDevolucao = 1;           
-            itemEmprestado.StatusEmprestimo = 1;
+            itemEmprestado.StatusDevolucao = (int)ItemEmprestado.DevolucaoStatus.NoPrazo;
+            itemEmprestado.StatusEmprestimo = (int)ItemEmprestado.EmprestimoStatus.EmEmprestimo;
             itemEmprestado.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == itemEmprestado.UsuarioId);
             itemEmprestado.Item = _repositorio.GetItemById(itemEmprestado.ItemId);
             _repositorio.Add(itemEmprestado);
 
             itemEmprestado.Item.Disponivel = false;
-            
             var item = itemEmprestado.Item;
             _repositorio.Update(item);
-            return View(itemEmprestado);
+
+            return RedirectToAction("ListaItens");
         }
 
         public IActionResult ListaItens()
@@ -332,7 +333,7 @@ namespace ShareHQ.Controllers
 
         public IActionResult EdicaoItemEmprestado(int id)
         {
-            var itens = _repositorio.GetItens().Where(x => x.Disponivel == true).Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
      
             itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
             ViewBag.Itens = itens;
@@ -357,7 +358,42 @@ namespace ShareHQ.Controllers
 
             if (!ModelState.IsValid)
             {
+                var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+
+                itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
+                ViewBag.Itens = itens;
+
+                var usuarios = _repositorio.Usuarios.Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+                usuarios.Insert(0, new SelectListItem { Value = "", Text = "Selecione o locatário" });
+                ViewBag.Usuarios = usuarios;
+
                 return View(item);
+            }
+
+
+            item.Item = _repositorio.GetItemById(item.ItemId);
+            var deadLine = item.DataEmprestimo.AddDays(item.PrazoDeDevolucao);
+
+            if (item.DataDevolucao.HasValue)
+            {
+                if (item.DataDevolucao > deadLine)
+                {
+                    item.Item.Disponivel = true;
+                    item.StatusDevolucao = (int) ItemEmprestado.EmprestimoStatus.Devolvido;
+                }
+            }
+            else
+            {
+                item.StatusEmprestimo = (int)ItemEmprestado.EmprestimoStatus.EmEmprestimo;
+
+                if (DateTime.Now > deadLine)
+                {
+                    item.StatusDevolucao = (int)ItemEmprestado.DevolucaoStatus.Atrasado;
+                }
+                else
+                {
+                    item.StatusDevolucao = (int)ItemEmprestado.DevolucaoStatus.NoPrazo;
+                }
             }
 
             item.Item = _repositorio.GetItemById(item.ItemId);
