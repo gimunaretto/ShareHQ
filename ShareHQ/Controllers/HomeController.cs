@@ -293,6 +293,8 @@ namespace ShareHQ.Controllers
                 return RedirectToAction("Index");
             }
 
+            itemEmprestado.StatusDevolucao = 1;           
+            itemEmprestado.StatusEmprestimo = 1;
             itemEmprestado.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == itemEmprestado.UsuarioId);
             itemEmprestado.Item = _repositorio.GetItemById(itemEmprestado.ItemId);
             _repositorio.Add(itemEmprestado);
@@ -325,7 +327,13 @@ namespace ShareHQ.Controllers
 
         public IActionResult EdicaoItemEmprestado(int id)
         {
-            MontaDropDownListCatergoria();
+            var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
+            ViewBag.Itens = itens;
+
+            var usuarios = _repositorio.Usuarios.Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+            usuarios.Insert(0, new SelectListItem { Value = "", Text = "Selecione o locatário" });
+            ViewBag.Usuarios = usuarios;
 
             var editando = _repositorio.GetEmprestadoById(id);
 
@@ -338,14 +346,16 @@ namespace ShareHQ.Controllers
         }
 
         [HttpPost]
-        public IActionResult EdicaoItemEMprestado(ItemEmprestado item)
+        public IActionResult EdicaoItemEmprestado(ItemEmprestado item)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(item);
             }
 
             item.Item = _repositorio.GetItemById(item.ItemId);
+            item.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == item.UsuarioId);
             _repositorio.Update(item);
             return RedirectToAction("ListaItens");
         }
