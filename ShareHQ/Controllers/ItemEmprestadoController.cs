@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ShareHQ.Models;
 using ShareHQ.ViewModels;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace ShareHQ.Controllers
@@ -29,12 +30,28 @@ namespace ShareHQ.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult GetEvents()
+        {
+            var culture = new CultureInfo("pt-BR", false);
+
+            var events = _repositorio.GetEmprestado().Select(e => new
+            {
+                id = e.Id,
+                title = _repositorio.GetItemById(e.ItemId).Titulo,
+                text = _repositorio.Usuarios.FirstOrDefault(x => x.Id == e.UsuarioId).Nome,
+                start = e.DataEmprestimo.ToString("yyyy-MM-dd HH:mm:ss"),
+                end = e.DataEmprestimo.AddDays(e.PrazoDeDevolucao).ToString("yyyy-MM-dd HH:mm:ss"),
+            }).ToList();
+            return new JsonResult(events);
+        }
+
         [HttpPost]
         public IActionResult Emprestimo(ItemEmprestado itemEmprestado)
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("ListaItens");
+                return RedirectToAction("Emprestimo");
             }
 
             itemEmprestado.StatusDevolucao = (int)ItemEmprestado.DevolucaoStatus.NoPrazo;
@@ -47,7 +64,7 @@ namespace ShareHQ.Controllers
             var item = itemEmprestado.Item;
             _repositorio.UpdateItem(item);
 
-            return RedirectToAction("ListaItens");
+            return RedirectToAction("Emprestimo");
         }
 
         public IActionResult ListaItens()

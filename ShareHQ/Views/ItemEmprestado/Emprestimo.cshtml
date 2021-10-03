@@ -8,47 +8,66 @@
     <div id='calendar'></div>
 </body>
 
-<div id="modalAgendamento" class="modal modal-fixed-footer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style=" border-radius: 4px; background-color:white">
-    <h4 class="modal-title transparent grey-text" style="border-radius: 4px;">
-        Emprestimo de Itens
-    </h4>
-    <form method="post" asp-controller="ItemEmprestado">
-        <div class="ui grid">
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle"></h5>
 
-            <div class="four wide column">
-                <div class="field">
-                    <label>Usuários</label>
-                    <select asp-for="UsuarioId" asp-items="@ViewBag.Usuarios"></select>
-                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="four wide column">
-                <div class="field">
-                    <label>Itens</label>
-                    <select asp-for="ItemId" asp-items="@ViewBag.Itens"></select>
-                </div>
+            <div class="modal-body">
+                <input type="hidden" id="eventId" value="" />
+                <p><b>Data do Empréstimo:</b> <span id="eventStart"></span></p>
+                <p><b>Data de Devolução:</b> <span id="eventEnd"></span></p>
             </div>
-            <div class="four wide column">
-                <div class="field">
-                    <label>Data de empréstimos</label>
-                    <input type="date" class="timepicker" autocomplete="off" asp-for="DataEmprestimo" placeholder="08:00">
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
             </div>
-            <div class="three wide column">
-                <div class="field">
-                    <label>Data de devolução</label>
-                    <input type="date" class="timepicker" autocomplete="off" asp-for="DataDevolucao" placeholder="08:00">
-                </div>
-            </div>
-            <div class="three wide column">
-                <label>Prazo de Devolução</label>
-                <div class="field tooltipped">
-                    <input asp-for="PrazoDeDevolucao" placeholder="Prazo de devolução" />
-                </div>
-            </div>
-            <input type="submit" class="btn btn-outline-primary" />
         </div>
-    </form>
+    </div>
 </div>
+
+<form method="post" asp-action="Emprestimo" asp-controller="ItemEmprestado" id="BookingForm">
+    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"> Novo Empréstimo </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Locatário</label>
+                        <select asp-for="UsuarioId" asp-items="@ViewBag.Usuarios"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Itens</label>
+                        <select asp-for="ItemId" asp-items="@ViewBag.Itens"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Data de empréstimos</label>
+                        <input type="datetime-local" class="timepicker" asp-for="DataEmprestimo" placeholder="Informe a data do empréstimo">
+                    </div>
+                    <div class="form-group">
+                        <label>Prazo de Devolução</label>
+                        <input asp-for="PrazoDeDevolucao" placeholder="Prazo de devolução" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-rounded btn-success"><i class="fas fa-check-square"></i> Salvar </button>
+                        <button type="button" class="btn btn-secondary btn-danger" data-dismiss="modal"><i class="fas fa-user-times"></i> Cancelar </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 <script>
 
@@ -56,13 +75,25 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            editable: true,
+            droppable: false,
+            editable: false,
             locale: 'pt-br',
-            dateClick: function () {
-                $("#modalAgendamento .modal-content").html("");
-                $("#modalAgendamento").modal("show");
+            navLinks: true,
+            eventClick: function (info) {
+                selectedEvent = info.event;
+                console.log(selectedEvent);
+                $('#eventId').val(info.event.id);
+                $('#modalTitle').text(info.event.title);
+                $('#eventStart').text(info.event.start);
+                $('#eventEnd').text(info.event.end);
+                $('#eventModal').modal();
+            },
+            events: '@Url.Action("getevents", "ItemEmprestado")',
+            dateClick: function (info) {
+                $('#saveModal').modal();
             }
         });
         calendar.render();
     });
+
 </script>
