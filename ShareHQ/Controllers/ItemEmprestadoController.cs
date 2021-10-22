@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ShareHQ.Data;
 using ShareHQ.Models;
 using ShareHQ.ViewModels;
 using System;
@@ -10,20 +11,27 @@ namespace ShareHQ.Controllers
 {
     public class ItemEmprestadoController : Controller
     {
-        private readonly IRepositorio _repositorio;
+        private readonly IRepository<ItemEmprestado> _reposItemEmprestado;
+        private readonly IRepository<Item> _reposItem;
+        private readonly IRepository<Usuario> _reposUsuario;
 
-        public ItemEmprestadoController(IRepositorio repositorio)
+        public ItemEmprestadoController(
+            IRepository<ItemEmprestado> reposItemEmprestado, 
+            IRepository<Item> reposItem,
+            IRepository<Usuario> reposUsuario)
         {
-            _repositorio = repositorio;
+            _reposItemEmprestado = reposItemEmprestado;
+            _reposItem = reposItem;
+            _reposUsuario = reposUsuario;
         }
 
         public IActionResult Emprestimo()
         {
-            var itens = _repositorio.GetItens().Where(x => x.Disponivel).Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            var itens = _reposItem.GetAll().Where(x => x.Disponivel).Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
             itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
             ViewBag.Itens = itens;
 
-            var usuarios = _repositorio.Usuarios.Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+            var usuarios = _reposUsuario.GetAll().Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
             usuarios.Insert(0, new SelectListItem { Value = "", Text = "Selecione o locatário" });
             ViewBag.Usuarios = usuarios;
 
@@ -35,14 +43,15 @@ namespace ShareHQ.Controllers
         {
             var culture = new CultureInfo("pt-BR", false);
 
-            var events = _repositorio.GetEmprestado().Select(e => new
+            var events = _reposItemEmprestado.GetAll().Select(e => new
             {
-                id = e.Id,
-                title = _repositorio.GetItemById(e.ItemId).Titulo,
-                text = _repositorio.Usuarios.FirstOrDefault(x => x.Id == e.UsuarioId).Nome,
+                id    = e.Id,
+                title = _reposItem.GetById(e.ItemId).Titulo,
+                text  = _reposUsuario.GetById(e.UsuarioId).Nome,
                 start = e.DataEmprestimo.ToString("yyyy-MM-dd HH:mm:ss"),
-                end = e.DataEmprestimo.AddDays(e.PrazoDeDevolucao).ToString("yyyy-MM-dd HH:mm:ss"),
+                end   = e.DataEmprestimo.AddDays(e.PrazoDeDevolucao).ToString("yyyy-MM-dd HH:mm:ss"),
             }).ToList();
+
             return new JsonResult(events);
         }
 
@@ -56,13 +65,14 @@ namespace ShareHQ.Controllers
 
             itemEmprestado.StatusDevolucao = (int)ItemEmprestado.DevolucaoStatus.NoPrazo;
             itemEmprestado.StatusEmprestimo = (int)ItemEmprestado.EmprestimoStatus.EmEmprestimo;
-            itemEmprestado.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == itemEmprestado.UsuarioId);
-            itemEmprestado.Item = _repositorio.GetItemById(itemEmprestado.ItemId);
-            _repositorio.Add(itemEmprestado);
+            itemEmprestado.Usuario = _reposUsuario.GetById(itemEmprestado.UsuarioId);
+            itemEmprestado.Item = _reposItem.GetById(itemEmprestado.ItemId);
+            
+            _reposItemEmprestado.Add(itemEmprestado);
 
             itemEmprestado.Item.Disponivel = false;
             var item = itemEmprestado.Item;
-            _repositorio.UpdateItem(item);
+            _reposItem.Update(item);
 
             return RedirectToAction("Emprestimo");
         }
@@ -71,12 +81,13 @@ namespace ShareHQ.Controllers
         {
             var itensEmprestadosViewModel = new ItensEmprestadosViewModel()
             {
-                Itens = _repositorio.GetEmprestado()
+                Itens = _reposItemEmprestado.GetAll()
             };
+
             foreach (var i in itensEmprestadosViewModel.Itens)
             {
-                i.Item = _repositorio.GetItemById(i.ItemId);
-                i.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == i.UsuarioId);
+                i.Item = _reposItem.GetById(i.ItemId);
+                i.Usuario = _reposUsuario.GetById(i.UsuarioId);
             }
 
             return View(itensEmprestadosViewModel);
@@ -85,22 +96,22 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult ListaItens(ItensEmprestadosViewModel itensEmprestadosViewModel)
         {
-            itensEmprestadosViewModel.Itens = _repositorio.GetEmprestado();
+            itensEmprestadosViewModel.Itens = _reposItemEmprestado.GetAll();
             return View(itensEmprestadosViewModel);
         }
 
         public IActionResult EdicaoItemEmprestado(int id)
         {
-            var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            var itens = _reposItem.GetAll().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
 
             itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
             ViewBag.Itens = itens;
 
-            var usuarios = _repositorio.Usuarios.Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+            var usuarios = _reposUsuario.GetAll().Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
             usuarios.Insert(0, new SelectListItem { Value = "", Text = "Selecione o locatário" });
             ViewBag.Usuarios = usuarios;
 
-            var editando = _repositorio.GetEmprestadoById(id);
+            var editando = _reposItemEmprestado.GetById(id);
 
             if (editando == null)
             {
@@ -115,19 +126,19 @@ namespace ShareHQ.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+                var itens = _reposItem.GetAll().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
 
                 itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
                 ViewBag.Itens = itens;
 
-                var usuarios = _repositorio.Usuarios.Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+                var usuarios = _reposUsuario.GetAll().Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
                 usuarios.Insert(0, new SelectListItem { Value = "", Text = "Selecione o locatário" });
                 ViewBag.Usuarios = usuarios;
 
                 return View(itemEmprestado);
             }
 
-            itemEmprestado.Item = _repositorio.GetItemById(itemEmprestado.ItemId);
+            itemEmprestado.Item = _reposItem.GetById(itemEmprestado.ItemId);
             var deadLine = itemEmprestado.DataEmprestimo.AddDays(itemEmprestado.PrazoDeDevolucao);
 
             if (itemEmprestado.DataDevolucao.HasValue)
@@ -152,24 +163,24 @@ namespace ShareHQ.Controllers
                 }
             }
 
-            itemEmprestado.Item = _repositorio.GetItemById(itemEmprestado.ItemId);
-            itemEmprestado.Usuario = _repositorio.Usuarios.FirstOrDefault(x => x.Id == itemEmprestado.UsuarioId);
-            _repositorio.Update(itemEmprestado);
+            itemEmprestado.Item = _reposItem.GetById(itemEmprestado.ItemId);
+            itemEmprestado.Usuario = _reposUsuario.GetById(itemEmprestado.UsuarioId);
+            _reposItemEmprestado.Update(itemEmprestado);
             return RedirectToAction("ListaItens");
         }
 
         public IActionResult RemocaoItemEmprestado(int id)
         {
-            var itens = _repositorio.GetItens().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
+            var itens = _reposItem.GetAll().Select(x => new SelectListItem() { Text = x.Titulo, Value = x.Id.ToString() }).ToList();
 
             itens.Insert(0, new SelectListItem { Value = "", Text = "Selecione o item" });
             ViewBag.Itens = itens;
 
-            var usuarios = _repositorio.Usuarios.Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+            var usuarios = _reposUsuario.GetAll().Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
             usuarios.Insert(0, new SelectListItem { Value = "", Text = "Selecione o locatário" });
             ViewBag.Usuarios = usuarios;
 
-            var removendo = _repositorio.GetEmprestadoById(id);
+            var removendo = _reposItemEmprestado.GetById(id);
 
             if (removendo == null)
             {
@@ -182,12 +193,13 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult RemocaoItemEmprestado(ItemEmprestado itemEmprestado)
         {
-            itemEmprestado = _repositorio.GetEmprestadoById(itemEmprestado.Id);
-            var itemVerificado = _repositorio.GetItemById(itemEmprestado.ItemId);
+            itemEmprestado = _reposItemEmprestado.GetById(itemEmprestado.Id);
+            var itemVerificado = _reposItem.GetById(itemEmprestado.ItemId);
             itemVerificado.Disponivel = true;
             var item = itemVerificado;
-            _repositorio.UpdateItem(item);
-            _repositorio.Remove(itemEmprestado);
+            
+            _reposItem.Update(item);
+            _reposItemEmprestado.Remove(itemEmprestado);
 
             return RedirectToAction("ListaItens");
         }

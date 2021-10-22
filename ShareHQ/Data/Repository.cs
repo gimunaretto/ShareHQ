@@ -1,7 +1,4 @@
-﻿// Seguido do Tutorial
-// http://www.linhadecodigo.com.br/artigo/3370/entity-framework-4-repositorio-generico.aspx
-
-using ShareHQ.Models;
+﻿using ShareHQ.Models;
 using System.Collections.Generic;
 using System.Linq;
 

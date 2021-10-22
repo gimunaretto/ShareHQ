@@ -8,12 +8,10 @@ namespace ShareHQ.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        //private readonly IRepositorio _repositorio;
-
-        public HomeController(ILogger<HomeController> logger/*, IRepositorio repositorio*/)
+        
+        public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
-            //_repositorio = repositorio;
+            _logger = logger;            
         }
 
         public IActionResult Index()

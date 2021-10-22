@@ -8,11 +8,11 @@ namespace ShareHQ.Controllers
 {
     public class CategoriaController : Controller
     {
-        private readonly IRepositoryCategoria _repositorio;
+        private readonly IRepository<Categoria> _reposCategoria;
 
-        public CategoriaController(IRepositoryCategoria repositorio)
+        public CategoriaController(IRepository<Categoria> reposCategoria)
         {
-            _repositorio = repositorio;
+            _reposCategoria = reposCategoria;
         }
 
         public IActionResult Categoria()
@@ -25,7 +25,7 @@ namespace ShareHQ.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repositorio.Add(categoria);
+                _reposCategoria.Add(categoria);
                 return RedirectToAction("Categorias");
             }
 
@@ -36,7 +36,7 @@ namespace ShareHQ.Controllers
         {
             var viewModel = new CategoriasViewModel()
             {
-                Categorias = _repositorio.GetAll(),
+                Categorias = _reposCategoria.GetAll(),
                 Search = string.Empty
             };
 
@@ -46,14 +46,14 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult Categorias(CategoriasViewModel viewModel)
         {
-            viewModel.Categorias = _repositorio.GetAll();
+            viewModel.Categorias = _reposCategoria.GetAll();
 
             return View(viewModel);
         }
 
         public IActionResult CategoriaEdicao(int id)
         {
-            var categoriaEditando = _repositorio.GetAll().FirstOrDefault(x => x.Id == id);
+            var categoriaEditando = _reposCategoria.GetAll().FirstOrDefault(x => x.Id == id);
             if (categoriaEditando == null)
                 return RedirectToAction("Categorias");
 
@@ -63,14 +63,14 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult CategoriaEdicao(Categoria categoria)
         {
-            _repositorio.Update(categoria);
+            _reposCategoria.Update(categoria);
 
             return RedirectToAction("Categorias");
         }
 
         public IActionResult CategoriaRemocao(int id)
         {
-            var categoriaRemovendo = _repositorio.GetAll().FirstOrDefault(x => x.Id == id);
+            var categoriaRemovendo = _reposCategoria.GetAll().FirstOrDefault(x => x.Id == id);
             if (categoriaRemovendo == null)
                 return RedirectToAction("Categorias");
 
@@ -80,7 +80,7 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult CategoriaRemocao(Categoria categoria)
         {
-            _repositorio.Remove(categoria);
+            _reposCategoria.Remove(categoria);
 
             return RedirectToAction("Categorias");
         }

@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShareHQ.Data;
 using ShareHQ.Models;
 using ShareHQ.ViewModels;
-using System.Linq;
 
 namespace ShareHQ.Controllers
 {
     public class UsuarioController : Controller
     {
-        private readonly IRepositorio _repositorio;
+        private readonly IRepository<Usuario> _reposUsuario;
 
-        public UsuarioController(IRepositorio repositorio)
+        public UsuarioController(IRepository<Usuario> reposUsuario)
         {
-            _repositorio = repositorio;
+            _reposUsuario = reposUsuario;
         }
 
         public IActionResult Usuario()
@@ -24,7 +24,7 @@ namespace ShareHQ.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repositorio.AdicionaUsuario(usuario);
+                _reposUsuario.Add(usuario);
                 return RedirectToAction("Usuarios");
             }
 
@@ -35,7 +35,7 @@ namespace ShareHQ.Controllers
         {
             var viewModel = new UsuariosViewModel()
             {
-                Usuarios = _repositorio.Usuarios,
+                Usuarios = _reposUsuario.GetAll(),
                 Search = string.Empty
             };
 
@@ -45,14 +45,15 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult Usuarios(UsuariosViewModel viewModel)
         {
-            viewModel.Usuarios = _repositorio.Usuarios;
+            viewModel.Usuarios = _reposUsuario.GetAll();
 
             return View(viewModel);
         }
 
         public IActionResult UsuarioEdicao(int id)
         {
-            var usuarioEditando = _repositorio.Usuarios.FirstOrDefault(x => x.Id == id);
+            var usuarioEditando = _reposUsuario.GetById(id);
+
             if (usuarioEditando == null)
                 return RedirectToAction("Usuarios");
 
@@ -62,14 +63,15 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult UsuarioEdicao(Usuario usuario)
         {
-            _repositorio.UpdateUsuario(usuario);
+            _reposUsuario.Update(usuario);
 
             return RedirectToAction("Usuarios");
         }
 
         public IActionResult UsuarioRemocao(int id)
         {
-            var usuarioRemovendo = _repositorio.Usuarios.FirstOrDefault(x => x.Id == id);
+            var usuarioRemovendo = _reposUsuario.GetById(id);
+
             if (usuarioRemovendo == null)
                 return RedirectToAction("Usuarios");
 
@@ -79,7 +81,7 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult UsuarioRemocao(Usuario usuario)
         {
-            _repositorio.RemoveUsuario(usuario);
+            _reposUsuario.Remove(usuario);
 
             return RedirectToAction("Usuarios");
         }

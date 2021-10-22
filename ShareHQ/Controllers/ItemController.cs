@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ShareHQ.Data;
 using ShareHQ.Models;
 using ShareHQ.ViewModels;
 using System.Linq;
@@ -8,11 +9,13 @@ namespace ShareHQ.Controllers
 {
     public class ItemController : Controller
     {
-        private readonly IRepositorio _repositorio;
+        private readonly IRepository<Item> _reposItem;
+        private readonly IRepository<Categoria> _reposCategoria;
 
-        public ItemController(IRepositorio repositorio)
+        public ItemController(IRepository<Item> reposItem, IRepository<Categoria> reposCategoria)
         {
-            _repositorio = repositorio;
+            _reposItem = reposItem;
+            _reposCategoria = reposCategoria;
         }
 
         public IActionResult Item()
@@ -29,8 +32,8 @@ namespace ShareHQ.Controllers
                 return View(item);
             }
 
-            item.Categoria = _repositorio.GetCategoriaById(item.CategoriaId);
-            _repositorio.AddItem(item);
+            item.Categoria = _reposItem.GetById(item.CategoriaId).Categoria;
+            _reposItem.Add(item);
             return RedirectToAction("Itens");
         }
 
@@ -38,7 +41,7 @@ namespace ShareHQ.Controllers
         {
             var itensViewModel = new ItensViewModel()
             {
-                Itens = _repositorio.GetItens()
+                Itens = _reposItem.GetAll()
             };
 
             return View(itensViewModel);
@@ -47,7 +50,7 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult Itens(ItensViewModel itensViewModel)
         {
-            itensViewModel.Itens = _repositorio.GetItens();
+            itensViewModel.Itens = _reposItem.GetAll();
             return View(itensViewModel);
         }
 
@@ -55,7 +58,7 @@ namespace ShareHQ.Controllers
         {
             MontaDropDownListCatergoria();
 
-            var editando = _repositorio.GetItemById(id);
+            var editando = _reposItem.GetById(id);
 
             if (editando == null)
             {
@@ -73,8 +76,8 @@ namespace ShareHQ.Controllers
                 return View(item);
             }
 
-            item.Categoria = _repositorio.GetCategoriaById(item.CategoriaId);
-            _repositorio.UpdateItem(item);
+            item.Categoria = _reposCategoria.GetById(item.CategoriaId);
+            _reposItem.Update(item);
             return RedirectToAction("Itens");
         }
 
@@ -82,7 +85,7 @@ namespace ShareHQ.Controllers
         {
             MontaDropDownListCatergoria();
 
-            var removendo = _repositorio.GetItemById(id);
+            var removendo = _reposItem.GetById(id);
 
             if (removendo == null)
             {
@@ -95,14 +98,14 @@ namespace ShareHQ.Controllers
         [HttpPost]
         public IActionResult RemocaoItem(Item item)
         {
-            _repositorio.RemoveItem(item);
+            _reposItem.Remove(item);
 
             return RedirectToAction("Itens");
         }
 
         private void MontaDropDownListCatergoria()
         {
-            var categorias = _repositorio.GetCategorias().Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
+            var categorias = _reposCategoria.GetAll().Select(x => new SelectListItem() { Text = x.Nome, Value = x.Id.ToString() }).ToList();
             categorias.Insert(0, new SelectListItem { Value = "", Text = "Selecione Categoria" });
             ViewBag.Categorias = categorias;
         }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ShareHQ.Data;
 using ShareHQ.Models;
 
 namespace ShareHQ
@@ -27,8 +28,8 @@ namespace ShareHQ
             {
                 options.UseSqlServer(connectionString);
             });
-
-            services.AddScoped<IRepositorio, Repositorio>();
+                        
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
